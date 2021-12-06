@@ -50,3 +50,26 @@ To profile, add this line
 
 # TODO Chromium refresh frequency for Chromium. Scroll?
 # TODO read other guys version https://bdking71.wordpress.com/2018/11/06/setup-an-information-kiosk-using-a-raspberry-pi-zero-w/#:~:text=This%20guide%20provides%20a%20lightweight,Chromium%20browser%20in%20Kiosk%20mode.
+
+## Installing Docker
+
+As of Dec 6 2021,  Raspbian link on server page takes me to Debian install page here
+https://docs.docker.com/engine/install/debian/
+
+Prereqs ask for Buster(10) or Bullseye (11)
+Says supports armhf  -- is this hard floating point?
+
+### Says Raspbian not supported, but the packages are in the archive, trying that.
+
+Swapping in Raspbian for debian as that URI exists with similar tree for dists and contents. Check sources file is correct after created. This worked in subsequent sudo apt update.
+```
+ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/raspbian \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+With that change, the rest of the install instructions work correctly, including sudo docker run hello-world, which produces expected output.
+
+Can then use sudo systemctl edit docker.service to provide config for the docker systemd unit
+https://docs.docker.com/engine/install/linux-postinstall/
+This is important as it includes remote access, if desired.
