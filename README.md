@@ -59,6 +59,8 @@ https://docs.docker.com/engine/install/debian/
 Prereqs ask for Buster(10) or Bullseye (11)
 Says supports armhf  -- is this hard floating point?
 
+2022 April 3  Dockerfiles
+
 ### Says Raspbian not supported, but the packages are in the archive, trying that.
 
 Swapping in Raspbian for debian as that URI exists with similar tree for dists and contents. Check sources file is correct after created. This worked in subsequent sudo apt update.
