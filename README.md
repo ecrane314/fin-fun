@@ -44,14 +44,14 @@ To profile, add this line
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && startx -- -nocursor
 ```
 
-## EXTRAS
+# EXTRAS
 ``` pkill -o chromium ``` Will kill the -o oldest process with Chromium, all other children will end as well, clearing your kiosk
 
 
-# TODO Chromium refresh frequency for Chromium. Scroll?
-# TODO read other guys version https://bdking71.wordpress.com/2018/11/06/setup-an-information-kiosk-using-a-raspberry-pi-zero-w/#:~:text=This%20guide%20provides%20a%20lightweight,Chromium%20browser%20in%20Kiosk%20mode.
+#TODO Chromium refresh frequency for Chromium. Scroll?
+#TODO read other guys version https://bdking71.wordpress.com/2018/11/06/setup-an-information-kiosk-using-a-raspberry-pi-zero-w/#:~:text=This%20guide%20provides%20a%20lightweight,Chromium%20browser%20in%20Kiosk%20mode.
 
-## Installing Docker
+# Installing Docker
 
 As of Dec 6 2021,  Raspbian link on server page takes me to Debian install page here
 https://docs.docker.com/engine/install/debian/
@@ -75,3 +75,9 @@ With that change, the rest of the install instructions work correctly, including
 Can then use sudo systemctl edit docker.service to provide config for the docker systemd unit
 https://docs.docker.com/engine/install/linux-postinstall/
 This is important as it includes remote access, if desired.
+
+# Flask App
+
+`export FLASK_APP=hello`
+
+`flask run`
