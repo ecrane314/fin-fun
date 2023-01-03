@@ -9,4 +9,7 @@ import pandas as pd
 url = "https://api.exchangerate-api.com/v4/latest/USD"
 df = pd.read_json(url)
 
+#TODO  IS THIS VALID JSON OUTPUT?
+#TODO put the key for the FRED request in KMS, load library here
+
 print(df)
