@@ -4,16 +4,23 @@ import os
 import requests
 
 
-# Pull in local API key from FRED account, no whitespace
+# Load local FRED API key, no whitespace
+#TODO Switch this to KMS
 f = open('FRED-api.key', 'r')
 key = f.read()
+series = "DGS2"
 
+
+# Results file
 out = open('requests.temp', 'a')
 
-r = requests.get(f'https://api.stlouisfed.org/fred/series?series_id=DGS2&api_key={key}&file_type=json')
-out.write(r.text)
 
-r2 = requests.get((f'https://api.stlouisfed.org/fred/series/observations?series_id=DGS2&api_key={key}&file_type=json'))
+# Series info to stdout
+r = requests.get(f'https://api.stlouisfed.org/fred/series?series_id={series}&api_key={key}&file_type=json')
+print(r.text)
+
+
+# Observations to file
+r2 = requests.get((f'https://api.stlouisfed.org/fred/series/observations?series_id={series}&api_key={key}&file_type=json'))
 out.write(r2.text)
-
 out.close()
