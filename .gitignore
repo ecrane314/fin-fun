@@ -1,6 +1,7 @@
 #EAC adding MacOS
 *.DS_Store
 *key
+*.temp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
