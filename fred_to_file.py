@@ -36,8 +36,10 @@ def get_fred(SERIES=SERIES):
         out.write(r2.text)
         out.close()
 
+
 if __name__ == "__main__":
     # TODO load series from file "series.txt"
-    open("series.txt").readlines()
-    # TODO consider this in the functions context
-    # TODO for x in series_list: function call FRED
+    with open("series.txt").readlines() as f:
+        for i in f:
+            get_fred(i)
+    # TODO consider this in the cloud functions context

@@ -2,3 +2,4 @@ Flask>=2.1.0
 requests
 pandas
 google-cloud-secret-manager
+google-cloud-bigquery
