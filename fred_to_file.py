@@ -5,24 +5,38 @@ January 2023"""
 
 import requests
 from google.cloud import secretmanager
+from google.cloud import storage
 
 
 FRED_API = "projects/175540505188/secrets/fred-api/versions/1"
-SERIES = "DGS2"
+BUCKET = "gs://crane-gcp/fred/"
+LIST = "series"
 
-
-# GCP Secret Manager hosts api key
-with secretmanager.SecretManagerServiceClient() as client:
-    response = client.access_secret_version(request={"name": FRED_API})
-    key = response.payload.data.decode("UTF-8")
 
 # Local file api key
 #with open('FRED-api.key', 'r', encoding='utf-8') as f:
 #   key = f.read()
 
+# Get series to pull
+def get_series():
+#TODO Bucket permissions
+#TODO define bucket WITHOUT /fred path and gs:// prefix
+#TODO test readlines works
+    with storage.Client() as client:
+        bucket = client.get_bucket(BUCKET)
+        object = bucket.get_blob(LIST)
+
+        blob = object.download_as_bytes()
+        list = blob.readlines()
+
 
 # Results file
 def get_fred(SERIES=SERIES):
+    # GCP Secret Manager hosts api key
+    with secretmanager.SecretManagerServiceClient() as client:
+        response = client.access_secret_version(request={"name": FRED_API})
+        key = response.payload.data.decode("UTF-8")
+
     with open('requests.temp', 'a', encoding='utf-8') as out:
 
         # Series info to stdout
