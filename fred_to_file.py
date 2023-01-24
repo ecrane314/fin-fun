@@ -9,8 +9,9 @@ from google.cloud import storage
 
 
 FRED_API = "projects/175540505188/secrets/fred-api/versions/1"
-BUCKET = "gs://crane-gcp/fred/"
-LIST = "series"
+BUCKET = "crane-gcp"
+# Leading / on object name will return type none
+SERIES = "fred/series"
 
 
 # Local file api key
@@ -19,19 +20,18 @@ LIST = "series"
 
 # Get series to pull
 def get_series():
-#TODO Bucket permissions
-#TODO define bucket WITHOUT /fred path and gs:// prefix
-#TODO test readlines works
-    with storage.Client() as client:
-        bucket = client.get_bucket(BUCKET)
-        object = bucket.get_blob(LIST)
+#TODO Fix readlines so that each line is an item
+    with storage.Client() as storage_client:
+        bucket_obj = storage_client.bucket(BUCKET)
+        blob_obj = bucket_obj.get_blob(SERIES)
 
-        blob = object.download_as_bytes()
-        list = blob.readlines()
+        blob = blob_obj.download_as_bytes()
+        print("get_series()" + blob)
+        return blob.readlines()
 
 
 # Results file
-def get_fred(SERIES=SERIES):
+def get_fred(SERIES=list):
     # GCP Secret Manager hosts api key
     with secretmanager.SecretManagerServiceClient() as client:
         response = client.access_secret_version(request={"name": FRED_API})
@@ -53,7 +53,10 @@ def get_fred(SERIES=SERIES):
 
 if __name__ == "__main__":
     # TODO load series from file "series.txt"
-    with open("series.txt").readlines() as f:
-        for i in f:
-            get_fred(i)
+    list = get_series()
+    print(list)
+
+    for i in list:
+        print(i)
+        #get_fred(i)
     # TODO consider this in the cloud functions context
