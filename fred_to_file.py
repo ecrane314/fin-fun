@@ -19,16 +19,18 @@ SERIES = "fred/series"
 #   key = f.read()
 
 # Get series to pull
-def get_series():
-#TODO Fix readlines so that each line is an item
-    with storage.Client() as storage_client:
-        bucket_obj = storage_client.bucket(BUCKET)
-        blob_obj = bucket_obj.get_blob(SERIES)
-
-        blob = blob_obj.download_as_bytes()
-        print("get_series()" + blob)
-        return blob.readlines()
-
+def get_series(bucket=BUCKET, series_file=SERIES):
+    storage_client = storage.Client()
+    #with storage.Client() as storage_client:
+    bucket_obj = storage_client.bucket(bucket)
+    blob_obj = bucket_obj.get_blob(series_file)
+    blob = blob_obj.download_as_text()
+    return blob.split()
+    
+    #print(type(blob))
+    #print(blob)
+    #print(type(blob_list))
+    #print(blob_list)
 
 # Results file
 def get_fred(SERIES=list):
@@ -52,11 +54,11 @@ def get_fred(SERIES=list):
 
 
 if __name__ == "__main__":
-    # TODO load series from file "series.txt"
     list = get_series()
     print(list)
 
     for i in list:
         print(i)
+#TODO  Check get_fred writes to file as expected.
         #get_fred(i)
     # TODO consider this in the cloud functions context
