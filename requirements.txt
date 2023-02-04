@@ -4,3 +4,4 @@ pandas
 google-cloud-secret-manager
 google-cloud-bigquery
 google-cloud-storage
+google-cloud-pubsub

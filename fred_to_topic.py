@@ -1,26 +1,22 @@
 #!/usr/bin/env python
 
 """Extract data series from FRED API
-January 2023"""
+Feb 2023"""
 
 import requests
 from google.cloud import secretmanager
 from google.cloud import storage
+from google.cloud import pubsub_v1
 
 
 FRED_API = "projects/175540505188/secrets/fred-api/versions/1"
 BUCKET = "crane-gcp"
-# Leading / on object name will return type none
 SERIES = "fred/series"
-
-
-# Local file api key
-#with open('FRED-api.key', 'r', encoding='utf-8') as f:
-#   key = f.read()
+TOPIC = "fred-json"
+PROJECT = 'crane-gcp'
 
 
 storage_client = storage.Client()
-
 def get_series(bucket=BUCKET, series_file=SERIES):
     '''Fetch series file from GCS and write to list'''
 
@@ -38,18 +34,18 @@ def get_fred(series):
         key = response.payload.data.decode("UTF-8")
 
 
-    with open('requests.temp', 'a', encoding='utf-8') as out:
-        # Series info to stdout
-        response = requests.get(f'https://api.stlouisfed.org/fred/series?series_id={series}&\
-            api_key={key}&file_type=json', timeout=5)
-        print(response.text)
+    # Observations to file
+    response2 = requests.get(f'https://api.stlouisfed.org/fred/series/observations?\
+        series_id={series}&api_key={key}&file_type=json', timeout=5)
+    return response2
 
-        # Observations to file
-        response2 = requests.get(f'https://api.stlouisfed.org/fred/series/observations?\
-            series_id={series}&api_key={key}&file_type=json', timeout=5)
-        out.write(response2.text)
-        out.close()
 
+publisher = pubsub_v1.PublisherClient()
+def publish_to_topic(data):
+    '''Write bytestring data to PubSub topic'''
+    topic_path = publisher.topic_path(project=PROJECT, topic=TOPIC)
+    future = publisher.publish(topic_path, data.content)
+    print(future.result())
 
 if __name__ == "__main__":
     series_list = get_series()
@@ -57,4 +53,5 @@ if __name__ == "__main__":
 
     for i in series_list:
         print(i)
-        #get_fred(i)
+        publish_to_topic(get_fred(i))
+    #TODO confirm message published works
