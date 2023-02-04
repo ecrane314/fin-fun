@@ -18,37 +18,35 @@ SERIES = "fred/series"
 #with open('FRED-api.key', 'r', encoding='utf-8') as f:
 #   key = f.read()
 
-# Get series to pull
+
+storage_client = storage.Client()
+
 def get_series(bucket=BUCKET, series_file=SERIES):
-    storage_client = storage.Client()
-    #with storage.Client() as storage_client:
+# Get series to pull
+    
     bucket_obj = storage_client.bucket(bucket)
     blob_obj = bucket_obj.get_blob(series_file)
     blob = blob_obj.download_as_text()
+    
     return blob.split()
     
-    #print(type(blob))
-    #print(blob)
-    #print(type(blob_list))
-    #print(blob_list)
 
-# Results file
-def get_fred(SERIES=list):
+def get_fred(series):
     # GCP Secret Manager hosts api key
     with secretmanager.SecretManagerServiceClient() as client:
         response = client.access_secret_version(request={"name": FRED_API})
         key = response.payload.data.decode("UTF-8")
 
-    with open('requests.temp', 'a', encoding='utf-8') as out:
 
+    with open('requests.temp', 'a', encoding='utf-8') as out:
         # Series info to stdout
-        r = requests.get(f'https://api.stlouisfed.org/fred/series?series_id={SERIES}&\
+        r = requests.get(f'https://api.stlouisfed.org/fred/series?series_id={series}&\
             api_key={key}&file_type=json', timeout=5)
         print(r.text)
 
         # Observations to file
         r2 = requests.get(f'https://api.stlouisfed.org/fred/series/observations?\
-            series_id={SERIES}&api_key={key}&file_type=json', timeout=5)
+            series_id={series}&api_key={key}&file_type=json', timeout=5)
         out.write(r2.text)
         out.close()
 
@@ -61,4 +59,4 @@ if __name__ == "__main__":
         print(i)
 #TODO  Check get_fred writes to file as expected.
         #get_fred(i)
-    # TODO consider this in the cloud functions context
+#TODO consider this in the cloud functions context
