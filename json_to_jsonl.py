@@ -31,13 +31,24 @@ def write_jsonl_file(json_input, out_file=OUT_FILE):
         out.close()
 
 
-def pull_json_from_subscription(subscription = JSON_SUB, project = PROJECT):
+def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     '''Load JSON data from a Google PubSub subscription'''
+    source_sub = f'projects/{project}/subscriptions/{sub}'
     sub_client = pubsub_v1.SubscriberClient()
-    sub = sub_client.subscription_path(project, subscription)
-    print (sub_client.pull(sub))
-#TODO pull not set correctly. Continue reading here. 
-https://cloud.google.com/python/docs/reference/pubsub/latest/google.cloud.pubsub_v1.subscriber.client.Client#google_cloud_pubsub_v1_subscriber_client_Client_pull
+    
+    request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=1)
+    response = sub_client.pull(request=request)
+    
+    sub_client.acknowledge(response)
+    #ack_request = pubsub_v1.AcknowledgeRequest(
+    #    subscription=source_sub,
+    #    ack_ids=[response],
+    #)
+#TODO Fix this
+#    for received_message in response.received_messages:
+ #       print(f"Received: {received_message.message.data}.")
+  #      ack_ids.append(received_message.ack_id)
+
 
 if __name__=="__main__":
     pull_json_from_subscription()
