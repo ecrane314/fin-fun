@@ -39,7 +39,7 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=1)
     response = sub_client.pull(request=request)
     
-    sub_client.acknowledge(response)
+    sub_client.acknowledge(response.ackID)
     #ack_request = pubsub_v1.AcknowledgeRequest(
     #    subscription=source_sub,
     #    ack_ids=[response],
