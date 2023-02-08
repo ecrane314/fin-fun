@@ -34,21 +34,25 @@ def write_jsonl_file(json_input, out_file=OUT_FILE):
 def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     '''Load JSON data from a Google PubSub subscription'''
     source_sub = f'projects/{project}/subscriptions/{sub}'
-    sub_client = pubsub_v1.SubscriberClient()
-    
-    request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=1)
-    response = sub_client.pull(request=request)
-    
-    sub_client.acknowledge(response.ackID)
-    #ack_request = pubsub_v1.AcknowledgeRequest(
-    #    subscription=source_sub,
-    #    ack_ids=[response],
-    #)
-#TODO Fix this
-#    for received_message in response.received_messages:
- #       print(f"Received: {received_message.message.data}.")
-  #      ack_ids.append(received_message.ack_id)
+    subscriber = pubsub_v1.SubscriberClient()
 
+    request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=1)
+    response = subscriber.pull(request=request)
+
+
+#TODO Fix acknowledgements 
+    print (type(response))
+    print (type(response.received_messages))
+    for i in response.received_messages:
+        print(type(i))
+        print(type(i.ack_id))
+    
+    if len(response.received_messages) == 0:
+        return
+
+    ack_request = pubsub_v1.types.AcknowledgeRequest(subscription=source_sub, ack_ids=response.received_messages.ack_id)
+    subscriber.acknowledge(ack_request)
+    #https://cloud.google.com/pubsub/docs/pull 
 
 if __name__=="__main__":
     pull_json_from_subscription()
