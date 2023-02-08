@@ -5,10 +5,13 @@
 import json
 from google.cloud import pubsub_v1
 
+
 IN_FILE = 'requests.temp'
 OUT_FILE = 'requsts.jsonl.temp'
 JSON_SUB = 'fred-json-sub'
 JSONL_TOPIC = 'fred-jsonl'
+MAX_MESSAGES = 1
+#TODO Remove Project to config
 PROJECT = 'crane-gcp'
 
 
@@ -36,23 +39,46 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     source_sub = f'projects/{project}/subscriptions/{sub}'
     subscriber = pubsub_v1.SubscriberClient()
 
-    request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=1)
+    request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=MAX_MESSAGES)
+
+    # response is type <class 'google.cloud.pubsub_v1.types.PullResponse'>
+    # response.received_messages is type
+    #  <class 'proto.marshal.collections.repeated.RepeatedComposite'>
     response = subscriber.pull(request=request)
 
-
-#TODO Fix acknowledgements 
-    print (type(response))
-    print (type(response.received_messages))
-    for i in response.received_messages:
-        print(type(i))
-        print(type(i.ack_id))
-    
+    # exit before erroring in for loop
     if len(response.received_messages) == 0:
+        print("No messages: len(received_messages==0)")
         return
 
-    ack_request = pubsub_v1.types.AcknowledgeRequest(subscription=source_sub, ack_ids=response.received_messages.ack_id)
+    # iterable contains individual objects of type
+    # <class 'google.cloud.pubsub_v1.types.ReceivedMessage'>
+    ack_ids = []
+    for i in response.received_messages:
+        ack_ids.append(i.ack_id)
+
+
+    #https://cloud.google.com/pubsub/docs/pull
+    #ack_request1 = pubsub_v1.types.AcknowledgeRequest(subscription=source_sub, ack_ids=ack_ids)
+    ack_request = pubsub_v1.types.AcknowledgeRequest(subscription=source_sub, ack_ids=ack_ids)
     subscriber.acknowledge(ack_request)
-    #https://cloud.google.com/pubsub/docs/pull 
+
+    return response.received_messages
+
+
+def publish_jsonl(json_input, topic=JSONL_TOPIC):
+    '''Read JSON messages and publish JSONL to topic'''
+    #TODO process and write
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(project=PROJECT, topic=topic)
+
+    jsonl_out = []
+    for i in json_input['observations']:
+            jsonl_out.append(json.dumps(i) + '\n')
+
+    publisher.publish(topic_path, jsonl_out)
+    
+
 
 if __name__=="__main__":
-    pull_json_from_subscription()
+    pull_json_from_subscription():

@@ -47,6 +47,7 @@ def publish_to_topic(data):
     future = publisher.publish(topic_path, data.content)
     print(future.result())
 
+
 if __name__ == "__main__":
     series_list = get_series()
     print(series_list)
