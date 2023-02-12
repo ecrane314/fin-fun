@@ -42,8 +42,6 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     request = pubsub_v1.types.PullRequest(subscription=source_sub, max_messages=MAX_MESSAGES)
 
     # response is type <class 'google.cloud.pubsub_v1.types.PullResponse'>
-    # response.received_messages is type
-    #  <class 'proto.marshal.collections.repeated.RepeatedComposite'>
     response = subscriber.pull(request=request)
 
     # exit before erroring in for loop
@@ -51,11 +49,15 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
         print("No messages: len(received_messages==0)")
         return
 
+    # response.received_messages is type
+    #  <class 'proto.marshal.collections.repeated.RepeatedComposite'>
     # iterable contains individual objects of type
     # <class 'google.cloud.pubsub_v1.types.ReceivedMessage'>
     ack_ids = []
+    data_list =[]
     for i in response.received_messages:
         ack_ids.append(i.ack_id)
+        data_list.append(i.message.data)
 
 
     #https://cloud.google.com/pubsub/docs/pull
@@ -63,22 +65,26 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     ack_request = pubsub_v1.types.AcknowledgeRequest(subscription=source_sub, ack_ids=ack_ids)
     subscriber.acknowledge(ack_request)
 
-    return response.received_messages
+    return data_list
 
 
-def publish_jsonl(json_input, topic=JSONL_TOPIC):
+def publish_jsonl(json_input, project=PROJECT, topic=JSONL_TOPIC):
     '''Read JSON messages and publish JSONL to topic'''
-    #TODO process and write
     publisher = pubsub_v1.PublisherClient()
-    topic_path = publisher.topic_path(project=PROJECT, topic=topic)
+    topic_path = publisher.topic_path(project=project, topic=topic)
 
-    jsonl_out = []
-    for i in json_input['observations']:
-            jsonl_out.append(json.dumps(i) + '\n')
-
-    publisher.publish(topic_path, jsonl_out)
+#json_input type <class 'list'>
+#TODO should return from pull_json_from_subscription() be a list?
     
+    jsonl_out = []
+   
+    for i in json_input:
+        #TODO Confirm and fix the below
+        jsonl_out.append(json.dumps(i) + '\n')
+
+    # publisher.publish(topic_path, jsonl_out)
 
 
 if __name__=="__main__":
-    pull_json_from_subscription():
+    json_data = pull_json_from_subscription()
+    publish_jsonl(json_data)
