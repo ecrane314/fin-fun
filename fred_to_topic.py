@@ -27,25 +27,27 @@ def get_series(bucket=BUCKET, series_file=SERIES):
     return blob.split()
 
 
+secret_client = secretmanager.SecretManagerServiceClient()
 def get_fred(series):
     '''Fetch a series from FRED API using key in GCP Secret Manager'''
-    with secretmanager.SecretManagerServiceClient() as client:
-        response = client.access_secret_version(request={"name": FRED_API})
-        key = response.payload.data.decode("UTF-8")
-
+    response = secret_client.access_secret_version(request={"name": FRED_API})
+    key = response.payload.data.decode("UTF-8")
 
     # Observations to file
     response2 = requests.get(f'https://api.stlouisfed.org/fred/series/observations?\
         series_id={series}&api_key={key}&file_type=json', timeout=5)
-    return response2
+    return response2.content
 
 
 publisher = pubsub_v1.PublisherClient()
 def publish_to_topic(data):
     '''Write bytestring data to PubSub topic'''
     topic_path = publisher.topic_path(project=PROJECT, topic=TOPIC)
-    future = publisher.publish(topic_path, data.content)
-    print(future.result())
+    print("=====data=====")
+    print(type(data))
+
+    future = publisher.publish(topic_path, data)
+    print("Result: " + future.result())
 
 
 if __name__ == "__main__":
@@ -53,6 +55,5 @@ if __name__ == "__main__":
     print(series_list)
 
     for i in series_list:
-        print(i)
+        print("Series: " + i)
         publish_to_topic(get_fred(i))
-    #TODO confirm message published works
