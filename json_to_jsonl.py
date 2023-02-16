@@ -49,7 +49,7 @@ def pull_json_from_subscription(project=PROJECT, sub=JSON_SUB):
     # exit before erroring in for loop
     if len(response.received_messages) == 0:
         print("No messages: len(received_messages==0)")
-        return
+        return []
 
     # iterable contains individual objects of type
     # <class 'google.cloud.pubsub_v1.types.ReceivedMessage'>
@@ -74,11 +74,11 @@ def publish_jsonl(json_input, topic=JSONL_TOPIC):
 
     jsonl_out = []
     for i in json_input['observations']:
-            jsonl_out.append(json.dumps(i) + '\n')
+        jsonl_out.append(json.dumps(i) + '\n')
 
     publisher.publish(topic_path, jsonl_out)
-    
+
 
 
 if __name__=="__main__":
-    pull_json_from_subscription():
+    pull_json_from_subscription()
