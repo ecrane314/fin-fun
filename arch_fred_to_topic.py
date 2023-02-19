@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 
 """Extract data series from FRED API
-Feb 2023"""
+Feb 2023
 
-import requests
-from google.cloud import secretmanager
-from google.cloud import storage
-from google.cloud import pubsub_v1
+UPDATE --- abandoning this module as PubSub is not the correct data plane for this bulk load
+Using GCS instead. PubSub would be correct if each observation were a single message.
+PubSub will be used for GCS finalization notifications, scheduling, and other orchestration
+"""
+
+
+# import requests
+# from google.cloud import secretmanager
+# from google.cloud import storage
+# from google.cloud import pubsub_v1
 
 
 FRED_API = "projects/175540505188/secrets/fred-api/versions/1"

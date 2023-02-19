@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-"""Convert JSON to JSONL so that it can be loaded into the warehouse"""
+"""Convert JSON to JSONL so that it can be loaded into the warehouse
+
+UPDATE --- abandoning this module as PubSub is not the correct data plane for this bulk load
+Using GCS instead. PubSub would be correct if each observation were a single message.
+PubSub will be used for GCS finalization notifications, scheduling, and other orchestration
+"""
 
 import json
 from google.cloud import pubsub_v1

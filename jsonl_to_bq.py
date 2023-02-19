@@ -20,6 +20,12 @@ from google.cloud import bigquery
 DATASETID = "fred"
 #SOURCEURI = "gs://ce-demo2/bq/icoads_core_2005-*.csv"
 
+# Make your client
+bq_client = bigquery.Client()
+
+def load_bq_from_uri(uri, dataset_id=DATASETID)
+"""respond to GCS obj finalization notifications"""
+#TODO write this function, create notifications
 
 def load_bq_from_file(series, dataset_id=DATASETID):
     """Submit a BigQuery load job which reads from local jsonl file."""
@@ -27,9 +33,6 @@ def load_bq_from_file(series, dataset_id=DATASETID):
     # Input filename
     filename = series + ".jsonl.temp"
     table_id = series
-
-    # Make your client
-    bq_client = bigquery.Client()
 
     # Pointer to our target dataset
     dataset_ref = bq_client.dataset(dataset_id)
@@ -55,4 +58,4 @@ def load_bq_from_file(series, dataset_id=DATASETID):
 
 
 if __name__=="__main__":
-    load_bq_from_file("DGS2")
+    load_bq_from_uri()
