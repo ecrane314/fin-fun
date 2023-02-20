@@ -12,20 +12,52 @@ export GOOGLE_APPLICATION_CREDENTIALS=/home/MyHomeDir/keys/<SERVICE ACCT PRV KEY
 # Read JSONL file and append write to BQ Table
 # Upsert needed as duplicates? Unique on the date of the observation
 # Need a new table per series? Yes. Run the joins as needed.
+
+BigQuery Python Client Library Documentation
+https://cloud.google.com/python/docs/reference/bigquery/latest/index.html
 """
 
 from google.cloud import bigquery
 
-# Override at runtime
+PROJECT= "crane-gcp"
 DATASETID = "fred"
-#SOURCEURI = "gs://ce-demo2/bq/icoads_core_2005-*.csv"
+BUCKET = "gs://ce-demo2/bq/icoads_core_2005-*.csv"
+PREFIX = "/fred/outbound/"
 
-# Make your client
+
+# BigQuery client constructor
 bq_client = bigquery.Client()
 
-def load_bq_from_uri(uri, dataset_id=DATASETID)
-"""respond to GCS obj finalization notifications"""
-#TODO write this function, create notifications
+
+def load_bq_from_uri(uri, dataset = DATASETID):
+    """Load jsonl data from GCS into BigQuery
+    respond to GCS obj finalization notifications"""
+    #TODO create gcs notifications OR use functions
+    #TODO update table naming logic to inherit from uri tail
+    # Create table reference
+    #TODO this is broken
+    table_ref = bigquery.TableReference(project=PROJECT, dataset_id=dataset, table="scratch")
+
+    # Set job config
+    # https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.job.LoadJobConfig
+    job_config = bigquery.LoadJobConfig(
+        autodetect = True,
+        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
+    )
+
+    # Run job
+    # https://cloud.google.com/python/docs/reference/bigquery/latest/google.cloud.bigquery.client.Client
+    # https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#jobconfigurationload
+    load_job = bq_client.load_table_from_uri(
+        uri,
+        table_ref,
+        location="us-central1",  # Must match the destination dataset location.
+        job_config=job_config,
+    )
+
+    print(load_job.result)
+
+
 
 def load_bq_from_file(series, dataset_id=DATASETID):
     """Submit a BigQuery load job which reads from local jsonl file."""
@@ -46,11 +78,11 @@ def load_bq_from_file(series, dataset_id=DATASETID):
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE
 
 
-    with open(filename, 'rb') as f:
+    with open(filename, 'rb') as f01:
         load_job = bq_client.load_table_from_file(
-            f, dataset_ref.table(table_id), job_config=job_config)
-    
-    print("Starting job {}".format(load_job.job_id))
+            f01, dataset_ref.table(table_id), job_config=job_config)
+
+    print(f"Starting job {load_job.job_id}")
 
     # Waits for table load job to complete, inform us.
     load_job.result()
@@ -58,4 +90,4 @@ def load_bq_from_file(series, dataset_id=DATASETID):
 
 
 if __name__=="__main__":
-    load_bq_from_uri()
+    load_bq_from_uri("")
