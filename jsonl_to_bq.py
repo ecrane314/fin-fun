@@ -89,5 +89,39 @@ def load_bq_from_file(series, dataset_id=DATASETID):
     print("Job finished.")
 
 
+def hello_auditlog(cloudevent):
+    '''
+    Inbound messages from gcs notifications will have data as such:
+    ATTRIBUTES: bucketId=crane-gcp
+    eventTime=2023-03-05T15:49:31.434003Z
+    eventType=OBJECT_FINALIZE
+    notificationConfig=projects/_/buckets/crane-gcp/notificationConfigs/3
+    objectGeneration=1678031371243876
+    objectId=fred/outbound/<file>.pdf
+    '''
+  #======= SAMPLE FUNCTION BELOW =========
+
+    # Print out the CloudEvent's (required) `type` property
+    # See https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#type
+    print(f"Event type: {cloudevent['type']}")
+
+    # Print out the CloudEvent's (optional) `subject` property
+    # See https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#subject
+    if 'subject' in cloudevent:
+        # CloudEvent objects don't support `get` operations.
+        # Use the `in` operator to verify `subject` is present.
+        print(f"Subject: {cloudevent['subject']}")
+
+    # Print out details from the `protoPayload`
+    # This field encapsulates a Cloud Audit Logging entry
+    # See https://cloud.google.com/logging/docs/audit#audit_log_entry_structure
+
+    payload = cloudevent.data.get("protoPayload")
+    if payload:
+        print(f"API method: {payload.get('methodName')}")
+        print(f"Resource name: {payload.get('resourceName')}")
+        print(f"Principal: {payload.get('authenticationInfo', dict()).get('principalEmail')}")
+
+
 if __name__=="__main__":
-    load_bq_from_uri("")
+    # load_bq_from_uri("")

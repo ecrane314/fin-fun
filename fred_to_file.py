@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """Extract data series from FRED API
-January 2023"""
+January 2023
+"""
 
 import json
 import requests
@@ -88,7 +89,19 @@ def bytes_to_jsonl(input_bytes):
 
 def bytes_to_gcs(bucket_name, name, bytes_to_be_written):
     '''Write bytes to Google Cloud Storage object
-    Input should be formatted in newline delimited JSONL so BigQuery can load'''
+    Input should be formatted in newline delimited JSONL so BigQuery can load
+    
+    To create notifications, use:
+    gsutil notification create -f none -p fred/outbound/ -t fred-jsonl -e OBJECT_FINALIZE gs://crane-gcp
+    
+    Message will have data as such:
+    ATTRIBUTES: bucketId=crane-gcp
+    eventTime=2023-03-05T15:49:31.434003Z
+    eventType=OBJECT_FINALIZE
+    notificationConfig=projects/_/buckets/crane-gcp/notificationConfigs/3
+    objectGeneration=1678031371243876
+    objectId=fred/outbound/<file>.pdf
+    '''
 
     bucket = storage_client.bucket(bucket_name)
     name = OUTBOUND_GCS_PREFIX + name
