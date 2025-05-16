@@ -1,3 +1,9 @@
+2025-05-16
+Black Scholes Pricing
+
+6? inputs and the expected price output for European style options
+Q] How effective is this with American options? What adaptations are needed if any?
+
 # Kiosk Installation
 
 Referenced https://desertbot.io/blog/raspberry-pi-touchscreen-kiosk-setup
