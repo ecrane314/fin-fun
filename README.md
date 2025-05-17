@@ -4,6 +4,25 @@ Black Scholes Pricing
 6? inputs and the expected price output for European style options
 Q] How effective is this with American options? What adaptations are needed if any?
 
+Frequency: Every 5?
+
+Traffic Estimation
+  API Calls: Data gathering
+  Tickers 100
+  Underlying price (every 5 minutes?)
+  Option price REAL
+
+Output
+  Estimated pricing or value of the contract
+
+Alerting
+  5% swing? 
+
+Get pricing for a particular ticker, strike, expiration
+https://polygon.io/pricing?product=options
+  $300 / yr for unlimited API calls, options
+
+
 # Kiosk Installation
 
 Referenced https://desertbot.io/blog/raspberry-pi-touchscreen-kiosk-setup
