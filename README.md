@@ -1,8 +1,20 @@
 2025-05-16
 Black Scholes Pricing
 
-6? inputs and the expected price output for European style options
 Q] How effective is this with American options? What adaptations are needed if any?
+6? inputs and the expected price output for European style options. These inputs are: 
+
+Inputs
+  Ticker list
+  API Key
+
+Current price of the underlying asset (S),
+the strike price of the option (K), 
+the time until expiration (T), 
+the risk-free interest rate (r), 
+the volatility of the underlying asset (σ), and 
+the dividend yield (q). 
+
 
 Frequency: Every 5?
 
@@ -12,16 +24,28 @@ Traffic Estimation
   Underlying price (every 5 minutes?)
   Option price REAL
 
+
 Output
-  Estimated pricing or value of the contract
+  Top return contracts from a set of tickers and expirations.
 
 Alerting
   5% swing? 
+
+
 
 Get pricing for a particular ticker, strike, expiration
 https://polygon.io/pricing?product=options
   $300 / yr for unlimited API calls, options
 
+https://databento.com/pricing#cme
+  $150/month starting. Paygo model too but historic only
+
+https://finnhub.io/docs/api/introduction
+  No options data
+
+https://intrinio.com/options/options-realtime
+  Intrinio
+  $2500/mo
 
 # Kiosk Installation
 
