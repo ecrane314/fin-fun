@@ -1,7 +1,8 @@
-pylint
-pipdeptree
-requests
-google-cloud-secret-manager
-google-cloud-bigquery
-google-cloud-storage
-google-cloud-pubsub
+polygon-api-client
+# pylint
+# pipdeptree
+# requests
+# google-cloud-secret-manager
+# google-cloud-bigquery
+# google-cloud-storage
+# google-cloud-pubsub
