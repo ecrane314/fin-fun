@@ -1,0 +1,69 @@
+Sample output from https://polygon.io/docs/rest/options/snapshots/option-chain-snapshot 
+
+
+
+/* 
+{
+  "request_id": "6a7e466379af0a71039d60cc78e72282",
+  "results": [
+    {
+      "break_even_price": 151.2,
+      "day": {
+        "change": 4.5,
+        "change_percent": 6.76,
+        "close": 120.73,
+        "high": 120.81,
+        "last_updated": 1605195918507251700,
+        "low": 118.9,
+        "open": 119.32,
+        "previous_close": 119.12,
+        "volume": 868,
+        "vwap": 119.31
+      },
+      "details": {
+        "contract_type": "call",
+        "exercise_style": "american",
+        "expiration_date": "2022-01-21",
+        "shares_per_contract": 100,
+        "strike_price": 150,
+        "ticker": "O:AAPL211022C000150000"
+      },
+      "fmv": 0.05,
+      "greeks": {
+        "delta": 1,
+        "gamma": 0,
+        "theta": 0.00229,
+        "vega": 0
+      },
+      "implied_volatility": 5,
+      "last_quote": {
+        "ask": 120.3,
+        "ask_size": 4,
+        "bid": 120.28,
+        "bid_size": 8,
+        "last_updated": 1605195918507251700,
+        "midpoint": 120.29,
+        "timeframe": "REAL-TIME"
+      },
+      "last_trade": {
+        "conditions": [
+          209
+        ],
+        "exchange": 316,
+        "price": 0.05,
+        "sip_timestamp": 1675280958783136800,
+        "size": 2,
+        "timeframe": "REAL-TIME"
+      },
+      "open_interest": 1543,
+      "underlying_asset": {
+        "change_to_break_even": 4.2,
+        "last_updated": 1605195918507251700,
+        "price": 147,
+        "ticker": "AAPL",
+        "timeframe": "DELAYED"
+      }
+    }
+  ],
+  "status": "OK"
+} */

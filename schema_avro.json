@@ -1,0 +1,227 @@
+{
+  "type": "RECORD",
+  "fields": [
+    {
+      "name": "request_id",
+      "type": "STRING"
+    },
+    {
+      "name": "results",
+      "type": "ARRAY",
+      "items": {
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "break_even_price",
+            "type": "DOUBLE"
+          },
+          {
+            "name": "day",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "change",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "change_percent",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "close",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "high",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "last_updated",
+                "type": "LONG"
+              },
+              {
+                "name": "low",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "open",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "previous_close",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "volume",
+                "type": "INTEGER"
+              },
+              {
+                "name": "vwap",
+                "type": "DOUBLE"
+              }
+            ]
+          },
+          {
+            "name": "details",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "contract_type",
+                "type": "STRING"
+              },
+              {
+                "name": "exercise_style",
+                "type": "STRING"
+              },
+              {
+                "name": "expiration_date",
+                "type": "STRING"
+              },
+              {
+                "name": "shares_per_contract",
+                "type": "INTEGER"
+              },
+              {
+                "name": "strike_price",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "ticker",
+                "type": "STRING"
+              }
+            ]
+          },
+          {
+            "name": "fmv",
+            "type": "DOUBLE"
+          },
+          {
+            "name": "greeks",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "delta",
+                "type": "INTEGER"
+              },
+              {
+                "name": "gamma",
+                "type": "INTEGER"
+              },
+              {
+                "name": "theta",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "vega",
+                "type": "INTEGER"
+              }
+            ]
+          },
+          {
+            "name": "implied_volatility",
+            "type": "DOUBLE"
+          },
+          {
+            "name": "last_quote",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "ask",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "ask_size",
+                "type": "INTEGER"
+              },
+              {
+                "name": "bid",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "bid_size",
+                "type": "INTEGER"
+              },
+              {
+                "name": "last_updated",
+                "type": "LONG"
+              },
+              {
+                "name": "midpoint",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "timeframe",
+                "type": "STRING"
+              }
+            ]
+          },
+          {
+            "name": "last_trade",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "conditions",
+                "type": "ARRAY",
+                "items": "INTEGER"
+              },
+              {
+                "name": "exchange",
+                "type": "INTEGER"
+              },
+              {
+                "name": "price",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "sip_timestamp",
+                "type": "LONG"
+              },
+              {
+                "name": "size",
+                "type": "INTEGER"
+              },
+              {
+                "name": "timeframe",
+                "type": "STRING"
+              }
+            ]
+          },
+          {
+            "name": "open_interest",
+            "type": "INTEGER"
+          },
+          {
+            "name": "underlying_asset",
+            "type": "RECORD",
+            "fields": [
+              {
+                "name": "change_to_break_even",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "last_updated",
+                "type": "LONG"
+              },
+              {
+                "name": "price",
+                "type": "DOUBLE"
+              },
+              {
+                "name": "ticker",
+                "type": "STRING"
+              },
+              {
+                "name": "timeframe",
+                "type": "STRING"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "status",
+      "type": "STRING"
+    }
+  ]
+}
