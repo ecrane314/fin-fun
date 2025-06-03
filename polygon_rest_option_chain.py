@@ -1,18 +1,34 @@
-import os
-api_key = os.environ.get('apiKey')
+# import os
+# api_key = os.environ.get('apiKey')
+
 
 from polygon import RESTClient
+from google.cloud import secretmanager
 
-client = RESTClient(api_key=api_key)
+POLYGON_API_KEY = "projects/990799180178/secrets/polygon/1"
 
 ticker = "AAPL"
 
+def key_from_secret_manager():
+    '''retrieve key from GCP Secret Manager
+    return type str'''
+    with secretmanager.SecretManagerServiceClient() as client:
+        response = client.access_secret_version(request={"name": POLYGON_API_KEY})
+        key = response.payload.data.decode("UTF-8")
+    return key
 
 
-contract = client.get_options_contract(
-	"O:SPY251219C00650000"
-	)
-print(contract)
+client = RESTClient(api_key=key_from_secret_manager())
+def get_option_chain_from_polygon():
+	contract = client.get_options_contract(
+		"O:SPY251219C00650000"
+		)
+	print(contract)
+
+if __name__ == "__main__":
+	response = get_option_chain_from_polygon()
+	print(response)
+
 
 
 """ contracts = []
