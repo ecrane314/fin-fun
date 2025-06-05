@@ -1,0 +1,92 @@
+{
+  "type": "record",
+  "name": "OptionsContract",
+  "namespace": "com.example.financial.options",
+  "doc": "Schema for an options contract",
+  "fields": [
+    {
+      "name": "additional_underlyings",
+      "doc": "Any additional underlying assets for this contract.",
+      "type": [
+        "null",
+        {
+          "type": "array",
+          "items": {
+            "type": "record",
+            "name": "UnderlyingInfo",
+            "doc": "Information about an additional underlying asset.",
+            "fields": [
+              {
+                "name": "identifier",
+                "type": ["null", "string"],
+                "default": null,
+                "doc": "An identifier for the underlying asset (e.g., ticker)."
+              }
+            ]
+          }
+        }
+      ],
+      "default": null
+    },
+    {
+      "name": "cfi",
+      "doc": "The CFI code for this option contract.",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "contract_type",
+      "doc": "The type of contract (e.g., 'call', 'put').",
+      "type": ["null", "string"], 
+      "default": null
+    },
+    {
+      "name": "correction",
+      "doc": "Correction number for the trade.",
+      "type": ["null", "int"], 
+      "default": null
+    },
+    {
+      "name": "exercise_style",
+      "doc": "The exercise style of the option (e.g., 'american', 'european').",
+      "type": ["null", "string"], 
+      "default": null
+    },
+    {
+      "name": "expiration_date",
+      "doc": "The expiration date of the option contract (YYYY-MM-DD).",
+      "type": ["null", { "type": "int", "logicalType": "date" }], 
+      "default": null
+    },
+    {
+      "name": "primary_exchange",
+      "doc": "The primary exchange for this option contract.",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "shares_per_contract",
+      "doc": "The number of shares per contract.",
+      "type": ["null", "int"], 
+      "default": null
+    },
+    {
+      "name": "strike_price",
+      "doc": "The strike price of the option.",
+      "type": ["null", "double"], 
+      "default": null
+    },
+    {
+      "name": "ticker",
+      "doc": "The ticker symbol for the option contract.",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "underlying_ticker",
+      "doc": "The ticker symbol of the underlying asset.",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

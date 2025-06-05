@@ -5,7 +5,7 @@
 from polygon import RESTClient
 from google.cloud import secretmanager
 
-POLYGON_API_KEY = "projects/990799180178/secrets/polygon/1"
+POLYGON_API_KEY = "projects/990799180178/secrets/polygon/versions/1"
 
 ticker = "AAPL"
 
