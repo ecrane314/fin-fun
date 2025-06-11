@@ -1,12 +1,20 @@
-2025-05-16
-Black Scholes Pricing
+# Option Console
+## Inputs and Config
+  ticker_list					Structure of desired tickers
+  api_key						API Key
+  
+## Outputs in dash
+  Top return contracts from a set of tickers and expirations.
 
-Q] How effective is this with American options? What adaptations are needed if any?
+## 2025-06-11
+- New goal: determine highest annualiezd point in time return incl. dividends, premium, and appreciation. Calculate return if exercised and if market static.
+- Black Scholes as a test, but secondary as this often uses actual prices to solve for volatility and is circular in calculation. Finding dislocations likely requires tick data.
+
+## 2025-05-16
+- Black Scholes Pricing
+- Q] How effective is this with American options? What adaptations are needed if any?
 6? inputs and the expected price output for European style options. These inputs are: 
 
-Inputs
-  Ticker list
-  API Key
 
 Current price of the underlying asset (S),
 the strike price of the option (K), 
@@ -24,9 +32,6 @@ Traffic Estimation
   Underlying price (every 5 minutes?)
   Option price REAL
 
-
-Output
-  Top return contracts from a set of tickers and expirations.
 
 Alerting
   5% swing? 
@@ -47,7 +52,8 @@ https://intrinio.com/options/options-realtime
   Intrinio
   $2500/mo
 
-# Kiosk Installation
+
+# [Archived] Kiosk Installation
 
 Referenced https://desertbot.io/blog/raspberry-pi-touchscreen-kiosk-setup
 

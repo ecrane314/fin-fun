@@ -1,13 +1,13 @@
-# import os
-# api_key = os.environ.get('apiKey')
-
-
 from polygon import RESTClient
 from google.cloud import secretmanager
 
 POLYGON_API_KEY = "projects/990799180178/secrets/polygon/versions/1"
+#TODO add bootstrap step to create schema for options chains
+#TODO add bootstrap step to create topic from schema
+requests_topic = "polygon_requested_ticker_chain"  #change to get this from config
+ticker_list = ["AAPL"]
+#Topic to which ticker requests are published
 
-ticker = "AAPL"
 
 def key_from_secret_manager():
     '''retrieve key from GCP Secret Manager
@@ -20,7 +20,9 @@ def key_from_secret_manager():
 
 client = RESTClient(api_key=key_from_secret_manager())
 def get_option_chain_from_polygon():
-	contract = client.get_options_contract(
+
+#TODO WHY is this getting a specific contract instead of a chain? 
+    contract = client.get_options_contract(
 		"O:SPY251219C00650000"
 		)
 	print(contract)
