@@ -6,6 +6,9 @@
 ## Outputs in dash
   Top return contracts from a set of tickers and expirations.
 
+## 2025-06-16
+- Created config file, bootstrap script, and rewrote 4 functions for separation of concerns.
+
 ## 2025-06-11
 - New goal: determine highest annualiezd point in time return incl. dividends, premium, and appreciation. Calculate return if exercised and if market static.
 - Black Scholes as a test, but secondary as this often uses actual prices to solve for volatility and is circular in calculation. Finding dislocations likely requires tick data.

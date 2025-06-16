@@ -1,12 +1,12 @@
+"""
+Pull a ticker from a pubsub subscription.
+Get that option chain from polygon.
+Print it and ack the message.
+"""
+
 from polygon import RESTClient
 from google.cloud import secretmanager
-
-POLYGON_API_KEY = "projects/990799180178/secrets/polygon/versions/1"
-#TODO add bootstrap step to create schema for options chains
-#TODO add bootstrap step to create topic from schema
-requests_topic = "polygon_requested_ticker_chain"  #change to get this from config
-ticker_list = ["AAPL"]
-#Topic to which ticker requests are published
+from google.cloud import pubsub
 
 
 def key_from_secret_manager():
@@ -18,18 +18,39 @@ def key_from_secret_manager():
     return key
 
 
-client = RESTClient(api_key=key_from_secret_manager())
-def get_option_chain_from_polygon():
+#GEM should the client be outside of the function for reuse?
+#TODO create pubsub client
+pubsub_client = pubsub.PubSubClient()
+def pull_from_subscription():
+     #TODO get a ticker from pubsub
+     result = pubsub_client.pull(REQUESTS_SUBSCRIPTION)
+     return result
 
-#TODO WHY is this getting a specific contract instead of a chain? 
-    contract = client.get_options_contract(
+
+def acknowledge_message(message_id):
+     #TODO acknowledge message after pulled
+     pubsub_client.ack(message_id)
+
+
+polygon_client = RESTClient(api_key=key_from_secret_manager())
+def get_option_chain_from_polygon(target_ticker):
+    #TODO turn target ticker into format for polygon
+    contract = polygon_client.get_options_contract(
+    #TODO WHY is this getting a specific contract instead of a chain? 
 		"O:SPY251219C00650000"
 		)
-	print(contract)
+	return contract
+
 
 if __name__ == "__main__":
-	response = get_option_chain_from_polygon()
-	print(response)
+    #GEM Try catch   or  with as  construct?
+    try( target_ticker = pull_from_subscription()):
+        catch ("Could not pull from subscription")
+
+    with response as get_option_chain_from_polygon(target_ticker):
+	    if (response.status == OK):
+            acknowledge_message(response.messageID)
+    print(response)
 
 
 
