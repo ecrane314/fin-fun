@@ -20,8 +20,6 @@ def key_from_secret_manager():
     return key
 
 
-#GEM should the client be outside of the function for reuse?
-#TODO create pubsub client
 pubsub_client = pubsub_v1.SubscriberClient()
 def pull_from_subscription():
     '''TODO get a ticker from pubsub'''
@@ -37,7 +35,7 @@ def acknowledge_message(subscription_id, message_id):
 polygon_client = RESTClient(api_key=key_from_secret_manager())
 def get_option_contract_overview():
     contract = polygon_client.get_options_contract(
-        "O:SPY251219C00650000"
+        "O:SPY251219C00750000"
         )
     print(contract)
 
