@@ -12,9 +12,10 @@ source ./config.sh
 gcloud auth application-default login
 
 gcloud pubsub schemas create option_contract_schema \
-    --type=JSON \
+    --type=avro \
     --definition-file= $definition_file
 
-gcloud pubsub topic create -- use schema $REQUESTS_TOPIC
+gcloud pubsub topics create $REQUESTS_TOPIC --schema=option_contract_schema
 
-gcloud pubsub subscriptions create $REQUESTS_SUBSCRIPTION --topic= $REQUESTS_TOPIC --bigquery type use destination table
+gcloud pubsub subscriptions create $REQUESTS_SUBSCRIPTION --topic= $REQUESTS_TOPIC \
+  --bigquery-table=$BIGQUERY_DEST use destination table

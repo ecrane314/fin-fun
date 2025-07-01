@@ -1,13 +1,13 @@
 """
-Pull a ticker from a pubsub subscription.
 Get that option chain from polygon.
 Print it and ack the message.
 """
 
 import os
+import json
+import requests
 from polygon import RESTClient
 from google.cloud import secretmanager
-from google.cloud import pubsub_v1
 
 
 def key_from_secret_manager():
@@ -19,27 +19,25 @@ def key_from_secret_manager():
         key = response_key.payload.data.decode("UTF-8")
     return key
 
-
-pubsub_client = pubsub_v1.SubscriberClient()
-def pull_from_subscription():
-    '''TODO get a ticker from pubsub'''
-    result = pubsub_client.pull(REQUESTS_SUBSCRIPTION)
-    return result
+api_key = key_from_secret_manager()
 
 
-def acknowledge_message(subscription_id, message_id):
-    #TODO acknowledge message after pulled
-    pubsub_client.acknowledge(subscription_id, message_id)
+def get_REST_option_contract_overview():
+    url ="https://api.polygon.io/v3/reference/options/contracts/O:SPY251219C00750000"
+    url_suffix="?apiKey=" + api_key
+    
+    response = requests.get(url + url_suffix)
+    print(response.json())
 
 
-polygon_client = RESTClient(api_key=key_from_secret_manager())
+polygon_client = RESTClient(api_key)
 def get_option_contract_overview():
     contract = polygon_client.get_options_contract(
         "O:SPY251219C00750000"
-        )
-    print(contract)
-
+    )
+    return contract
 
 
 if __name__ == "__main__":
-    get_option_contract_overview()
+    # get_option_contract_overview()
+    get_REST_option_contract_overview()
