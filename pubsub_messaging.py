@@ -4,6 +4,7 @@ Ack a pubsub message
 Publish data to a pubsub topic with a schema
 """
 
+import os
 from google.cloud import pubsub_v1
 
 
@@ -22,6 +23,6 @@ def acknowledge_message(subscription_id, message_id):
     sub_client.acknowledge(subscription_id, message_id)
 
 
-def push_to_schema_topic(payload, topic):
-    pub_client.publish(topic, payload)
-
+def push_to_schema_topic(topic, payload):
+    topic_path = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
+    pub_client.publish(topic_path, payload)

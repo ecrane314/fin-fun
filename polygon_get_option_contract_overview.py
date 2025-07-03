@@ -23,16 +23,20 @@ api_key = key_from_secret_manager()
 
 
 def get_REST_option_contract_overview():
+    '''Use REST endpoint, get contract overview'''
     url ="https://api.polygon.io/v3/reference/options/contracts/O:SPY251219C00750000"
     url_suffix="?apiKey=" + api_key
     
     response = requests.get(url + url_suffix)
-    print(response.json())
+    response.raise_for_status()  #GCA It's good practice to check for request errors
+    print(type(response.content))
+    return response.content
 
 
-polygon_client = RESTClient(api_key)
+polygon_REST_client = RESTClient(api_key)
 def get_option_contract_overview():
-    contract = polygon_client.get_options_contract(
+    '''Use Python REST client library, get contract overview'''
+    contract = polygon_REST_client.get_options_contract(
         "O:SPY251219C00750000"
     )
     return contract
@@ -40,4 +44,5 @@ def get_option_contract_overview():
 
 if __name__ == "__main__":
     # get_option_contract_overview()
+    # print(api_key)
     get_REST_option_contract_overview()
