@@ -34,5 +34,6 @@ gcloud pubsub topics create $PAYLOAD_TOPIC --schema=$PAYLOAD_SCHEMA \
 bq mk -t $BIGQUERY_DEST_TABLE
 
 gcloud pubsub subscriptions create $PAYLOAD_SUBSCRIPTION --topic=$PAYLOAD_TOPIC \
+  --topic-project=$PROJECT_ID 
   --bigquery-table=$BIGQUERY_DEST_TABLE \
   --use-topic-schema
