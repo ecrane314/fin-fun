@@ -29,8 +29,10 @@ def get_REST_option_contract_overview():
     
     response = requests.get(url + url_suffix)
     response.raise_for_status()  #GCA It's good practice to check for request errors
-    print(type(response.content))
-    return response.content
+    # type is class 'bytes' > response.content
+    # type is class 'dict' > response.json()
+    # print(json.dumps(response.json()))
+    return response.json()
 
 
 polygon_REST_client = RESTClient(api_key)

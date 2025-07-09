@@ -1,0 +1,65 @@
+[
+  {
+    "name": "results",
+    "type": "RECORD",
+    "mode": "NULLABLE",
+    "fields": [
+      {
+        "name": "cfi",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "contract_type",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "exercise_style",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "expiration_date",
+        "type": "STRING",
+        "mode": "NULLABLE",
+        "description": "Consider using DATE or TIMESTAMP for this field if the data format allows."
+      },
+      {
+        "name": "primary_exchange",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "shares_per_contract",
+        "type": "INTEGER",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "strike_price",
+        "type": "FLOAT",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "ticker",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "underlying_ticker",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      }
+    ]
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "request_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  }
+]
