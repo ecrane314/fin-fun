@@ -14,7 +14,7 @@ pub_client = pubsub_v1.PublisherClient()
 
 def pull_from_subscription():
     '''TODO get a ticker from pubsub'''
-    result = sub_client.pull(REQUESTS_SUBSCRIPTION)
+    result = sub_client.pull(os.environ.get("REQUESTS_SUBSCRIPTION"))
     return result
 
 
@@ -23,6 +23,23 @@ def acknowledge_message(subscription_id, message_id):
     sub_client.acknowledge(subscription_id, message_id)
 
 
+#messages to be sent
+futures = []
+
 def push_to_schema_topic(topic, payload):
     topic_path = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
-    pub_client.publish(topic_path, payload)
+    
+    # print(type(topic_path))
+    # print(topic_path)
+    
+    # print(type(payload))
+    # print(payload)
+    
+    future = pub_client.publish(topic_path, payload)
+    print(future.result())
+    futures.append(future)
+
+if __name__ == "__main__":
+    result = pull_from_subscription()
+
+    acknowledge_message(result.id)

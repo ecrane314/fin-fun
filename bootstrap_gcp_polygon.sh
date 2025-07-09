@@ -31,7 +31,8 @@ gcloud pubsub schemas create $PAYLOAD_SCHEMA \
 gcloud pubsub topics create $PAYLOAD_TOPIC --schema=$PAYLOAD_SCHEMA \
     --message-encoding=json
 
-bq mk -t $BIGQUERY_DEST_TABLE
+bq mk -t --schema $BIGQUERY_SCHEMA $BIGQUERY_DEST_TABLE 
+
 
 gcloud pubsub subscriptions create $PAYLOAD_SUBSCRIPTION --topic=$PAYLOAD_TOPIC \
   --topic-project=$PROJECT_ID \
