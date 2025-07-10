@@ -12,6 +12,13 @@ sub_client = pubsub_v1.SubscriberClient()
 pub_client = pubsub_v1.PublisherClient()
 
 
+def push_ticker_to_topic(topic, payload):
+    topic = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
+    result = pub_client.publish(topic, payload)
+    print(result)
+    return
+
+
 def pull_from_subscription():
     '''TODO get a ticker from pubsub'''
     result = sub_client.pull(os.environ.get("REQUESTS_SUBSCRIPTION"))
