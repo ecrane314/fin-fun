@@ -31,7 +31,7 @@ if __name__ == "__main__":
     print(payload)
 
     pubsub.push_ticker_to_topic(topic, payload)
-
+    
 
     # payload = os.getenv("PAYLOAD_TOPIC")
     # json_payload = get_REST_option_contract_overview()

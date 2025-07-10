@@ -11,13 +11,19 @@ from google.cloud import pubsub_v1
 sub_client = pubsub_v1.SubscriberClient()
 pub_client = pubsub_v1.PublisherClient()
 
+#messages to be sent
+ticker_futures = []
 
 def push_ticker_to_topic(topic, payload):
     topic = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
-    result = pub_client.publish(topic, payload)
-    print(result)
-    return
+    
+    for i in payload:
+        future = pub_client.publish(topic, i)
+        ticker_futures.append(future)
 
+    for j in ticker_futures:
+       print(j.result())
+    return
 
 def pull_from_subscription():
     '''TODO get a ticker from pubsub'''
@@ -29,9 +35,6 @@ def acknowledge_message(subscription_id, message_id):
     #TODO acknowledge message after pulled
     sub_client.acknowledge(subscription_id, message_id)
 
-
-#messages to be sent
-futures = []
 
 def push_to_schema_topic(topic, payload):
     topic_path = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
