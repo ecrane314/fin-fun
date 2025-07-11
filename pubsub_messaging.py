@@ -18,7 +18,8 @@ def push_ticker_to_topic(topic, payload):
     topic = pub_client.topic_path(os.environ.get("PROJECT_ID"), topic)
     
     for i in payload:
-        future = pub_client.publish(topic, i)
+        print(type(i))
+        future = pub_client.publish(topic, bytes(i, 'utf-8'))
         ticker_futures.append(future)
 
     for j in ticker_futures:

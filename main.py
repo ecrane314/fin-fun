@@ -16,6 +16,7 @@ Write payload to payload topic
 """
 
 import os
+import json
 
 import pubsub_messaging as pubsub
 from polygon_get_option_contract_overview import get_REST_option_contract_overview
@@ -25,8 +26,9 @@ if __name__ == "__main__":
     # ticker = pull_from_subscription()
 
     topic = os.getenv("REQUESTS_TOPIC")
-    payload = open("./tickers_config.json", "rb").read()
-    
+    payload_file = open("./tickers_config.json", "r")
+    payload = json.load(payload_file)
+
     print(topic)
     print(payload)
 
