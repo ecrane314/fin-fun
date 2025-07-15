@@ -26,7 +26,7 @@ if __name__ == "__main__":
     # ticker = pull_from_subscription()
 
     topic = os.getenv("REQUESTS_TOPIC")
-    payload_file = open("./tickers_config.json", "r")
+    payload_file = open("./config_tickers.json", "r")
     payload = json.load(payload_file)
 
     print(topic)
